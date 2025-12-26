@@ -5,10 +5,9 @@ A Retrieval-Augmented Generation (RAG) system built with FastAPI, LangChain, Goo
 ## Features
 
 - **RAG Architecture**: Retrieves relevant context from vector storage to answer user questions.
-- **Google Gemini**: Uses `gemini-pro` for generation and `embedding-001` for vector embeddings.
+- **Google Gemini**: for generation and vector embeddings.
 - **PostgreSQL**: Robust database with `pgvector` extension for similarity search.
 - **Conversation History**: Logs all questions, answers, and retrieved context.
-- **Clean Architecture**: Modular code structure for maintainability.
 
 ## Project Structure
 
@@ -60,6 +59,23 @@ A Retrieval-Augmented Generation (RAG) system built with FastAPI, LangChain, Goo
     GOOGLE_LLM_MODEL=gemini-pro
     KWARGS=3
     ```
+
+## Running with Docker
+
+1.  **Build and Start**:
+    ```bash
+    docker-compose up --build
+    ```
+2.  **Run Migrations**:
+    ```bash
+    docker-compose exec app python -m src.scripts.migrations
+    ```
+3.  **Seed Data**:
+    ```bash
+    docker-compose exec app python -m src.scripts.seed
+    ```
+4.  **Access**:
+    The API will be available at `http://localhost:8000`.
 
 ## Usage
 
