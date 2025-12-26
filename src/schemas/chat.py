@@ -7,6 +7,8 @@ class Source(BaseModel):
     score: float
 
 class AskRequest(BaseModel):
+    users: object
+    space: Optional[object] = None
     question: str
 
 class AskResponse(BaseModel):

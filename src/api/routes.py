@@ -9,7 +9,7 @@ router = APIRouter()
 @router.post("/ask", response_model=AskResponse)
 async def ask_question(request: AskRequest, db: AsyncSession = Depends(get_db)):
     try:
-        result = await rag_service.ask_question(request.question, db)
+        result = await rag_service.ask_question(request.question, request.users, request.space, db)
         return AskResponse(**result)
     except Exception as e:
         print(f"Error processing request: {e}")

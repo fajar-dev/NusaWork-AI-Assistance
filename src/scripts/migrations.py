@@ -32,12 +32,14 @@ async def run_migrations():
         
         print("Creating history table...")
         create_table_query = """
-        CREATE TABLE IF NOT EXISTS history (
+        CREATE TABLE IF NOT EXISTS histories (
             id SERIAL PRIMARY KEY,
             question TEXT NOT NULL,
             answer TEXT NOT NULL,
-            similarity_score FLOAT,
-            similarity_results TEXT,
+            similarity_score FLOAT DEFAULT NULL,
+            similarity_results JSONB NULL,
+            users JSON NOT NULL,
+            space JSON NULL,
             created_at TIMESTAMPTZ DEFAULT NOW()
         );
         """

@@ -3,7 +3,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from sqlalchemy.ext.asyncio import AsyncSession
-import json
 
 from src.core.config import settings
 from src.services.vector_service import vector_service
@@ -28,7 +27,7 @@ class RAGService:
     def _format_docs(self, docs):
         return "\n\n".join([d.page_content for d in docs])
 
-    async def ask_question(self, question: str, db: AsyncSession) -> dict:
+    async def ask_question(self, question: str, users: object, space: object, db: AsyncSession) -> dict:
         # 1. Retrieve with scores
         docs_and_scores = self.vector_store.similarity_search_with_score(question, k=settings.KWARGS)
         
@@ -44,8 +43,7 @@ class RAGService:
                 "score": score
             })
         
-        sim_results_json = json.dumps(sources_data)
-        
+
         # 2. Generate
         chain = (
             RunnablePassthrough() 
@@ -59,8 +57,10 @@ class RAGService:
         new_history = History(
             question=question,
             answer=answer,
+            users=users,
+            space=space,
             similarity_score=sources_data[0]["score"] if sources_data else 0.0,
-            similarity_results=sim_results_json
+            similarity_results=sources_data
         )
         db.add(new_history)
         await db.commit()
