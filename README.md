@@ -39,17 +39,21 @@ A Retrieval-Augmented Generation (RAG) system built with FastAPI, LangChain, Goo
     ```
 4.  **Configure Environment**:
     Create a `.env` file in the root directory:
+
     ```env
-    APP_PORT=8000
+    PORT=8000
+    HOST=0.0.0.0
+
     DB_HOST=localhost
     DB_PORT=5432
     DB_USER=postgres
     DB_PASSWORD=password
     DB_DATABASE=vectordb
+
     GOOGLE_API_KEY=your_google_api_key
     GOOGLE_EMBEDDING_MODEL=embedding-001
     GOOGLE_LLM_MODEL=gemini-pro
-    VECTOR_K=3
+    KWARGS=3
     ```
 
 ## Usage
