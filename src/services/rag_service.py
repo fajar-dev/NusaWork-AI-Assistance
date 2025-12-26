@@ -16,7 +16,7 @@ class RAGService:
             google_api_key=settings.GOOGLE_API_KEY
         )
         self.vector_store = vector_service.get_vector_store()
-        self.retriever = self.vector_store.as_retriever(search_kwargs={"k": settings.VECTOR_K})
+        self.retriever = self.vector_store.as_retriever(search_kwargs={"k": settings.KWARGS})
         
         self.template = """Answer the question based only on the following context:
         {context}
@@ -30,7 +30,7 @@ class RAGService:
 
     async def ask_question(self, question: str, db: AsyncSession) -> dict:
         # 1. Retrieve with scores
-        docs_and_scores = self.vector_store.similarity_search_with_score(question, k=settings.VECTOR_K)
+        docs_and_scores = self.vector_store.similarity_search_with_score(question, k=settings.KWARGS)
         
         docs = [doc for doc, _ in docs_and_scores]
         context_text = self._format_docs(docs)

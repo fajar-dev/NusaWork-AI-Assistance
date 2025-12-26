@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Settings(BaseSettings):
+    PORT: int = int(os.getenv("PORT", 8000))
+    HOST: str = os.getenv("HOST", "0.0.0.0")
     DB_HOST: str = os.getenv("DB_HOST", "localhost")
     DB_PORT: str = os.getenv("DB_PORT", "5432")
     DB_USER: str = os.getenv("DB_USER", "postgres")
@@ -13,8 +15,7 @@ class Settings(BaseSettings):
     GOOGLE_API_KEY: str = os.getenv("GOOGLE_API_KEY", "")
     GOOGLE_EMBEDDING_MODEL: str = os.getenv("GOOGLE_EMBEDDING_MODEL", "models/embedding-001")
     GOOGLE_LLM_MODEL: str = os.getenv("GOOGLE_LLM_MODEL", "gemini-pro")
-    APP_PORT: int = int(os.getenv("APP_PORT", 8000))
-    VECTOR_K: int = int(os.getenv("VECTOR_K", 3))
+    KWARGS: int = int(os.getenv("KWARGS", 3))
 
     @property
     def DATABASE_URL(self) -> str:

@@ -6,9 +6,7 @@ from langchain_core.documents import Document
 
 from src.core.config import settings
 
-
 TABLE_NAME = "embeddings"
-
 ID_COLUMN = "id"
 CONTENT_COLUMN = "content"
 VECTOR_COLUMN = "vector"
@@ -21,7 +19,6 @@ class VectorService:
             model=settings.GOOGLE_EMBEDDING_MODEL,
             google_api_key=settings.GOOGLE_API_KEY,
         )
-
         self.engine = PGEngine.from_connection_string(settings.PSYCOPG_DATABASE_URL)
 
         vector_size = self._detect_vector_size(default_size=768)
@@ -35,15 +32,20 @@ class VectorService:
         except Exception:
             return default_size
 
+    def _store_kwargs(self) -> dict:
+        return {
+            "table_name": TABLE_NAME,
+            "id_column": ID_COLUMN,
+            "content_column": CONTENT_COLUMN,
+            "embedding_column": VECTOR_COLUMN,
+            "metadata_json_column": METADATA_JSON_COLUMN,
+        }
+
     def _init_table(self, vector_size: int) -> None:
         try:
             self.engine.init_vectorstore_table(
-                table_name=TABLE_NAME,
                 vector_size=vector_size,
-                id_column=ID_COLUMN,
-                content_column=CONTENT_COLUMN,
-                embedding_column=VECTOR_COLUMN,
-                metadata_json_column=METADATA_JSON_COLUMN,
+                **self._store_kwargs(),
             )
         except Exception as e:
             print(f"[VectorService] Table init skipped (likely exists): {e}")
@@ -51,12 +53,8 @@ class VectorService:
     def get_vector_store(self) -> PGVectorStore:
         return PGVectorStore.create_sync(
             engine=self.engine,
-            table_name=TABLE_NAME,
             embedding_service=self.embeddings,
-            id_column=ID_COLUMN,
-            content_column=CONTENT_COLUMN,
-            embedding_column=VECTOR_COLUMN,
-            metadata_json_column=METADATA_JSON_COLUMN,
+            **self._store_kwargs(),
         )
 
     def seed_data(self) -> None:
