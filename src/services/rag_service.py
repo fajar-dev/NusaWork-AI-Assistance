@@ -7,6 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.core.config import settings
 
 from src.models.history import History
+from fastapi import Depends
+from src.services.vector_service import VectorService, get_vector_service
 
 class RAGService:
     def __init__(self, vector_service):
@@ -16,13 +18,21 @@ class RAGService:
         )
         self.vector_store = vector_service.get_vector_store()
         
-        self.template = """Answer the question based only on the following context:
+        self.template = """Answer the question based only on the following context.
+
+        Context:
         {context}
 
-        Question: {question}
+        Question:
+        {question}
+
+        Instruction:
+        - Answer briefly, clearly, and directly with Indonesian language.
+        - Use only information from the context.
         """
+
         self.prompt = ChatPromptTemplate.from_template(self.template)
-        
+
     def _format_docs(self, docs):
         return "\n\n".join([d.page_content for d in docs])
 
@@ -70,10 +80,6 @@ class RAGService:
             "answer": answer,
             "sources": sources_data
         }
-
-
-from fastapi import Depends
-from src.services.vector_service import VectorService, get_vector_service
 
 def get_rag_service(vector_service: VectorService = Depends(get_vector_service)):
     return RAGService(vector_service)
