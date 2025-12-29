@@ -141,3 +141,21 @@ Response:
   "question": "Apa itu NusaID?"
 }
 ```
+
+Response:
+
+```json
+{
+  "question": "Apa itu NusaID?",
+  "answer": "NusaID is... ",
+  "sources": [
+    {
+      "content": "NusaWork is a comprehensive HR management platform designed to streamline human resource processes.",
+      "metadata": {
+        "source": "overview"
+      },
+      "score": 0.4572025734098184
+    }
+  ]
+}
+```
