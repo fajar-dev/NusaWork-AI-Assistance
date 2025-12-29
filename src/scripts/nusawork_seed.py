@@ -2,9 +2,9 @@ from langchain_core.documents import Document
 from src.services.vector_service import VectorService
 
 def main():
-    print("Seeding data...")
+    print("Seeding Nusawork data...")
     vector_service = VectorService()
-    vector_store = vector_service.get_vector_store()
+    vector_store = vector_service.get_nusawork_store()
 
     docs = [
         Document(
@@ -1577,9 +1577,8 @@ def main():
             metadata={"category":"Nusawork Help", "title": "Tidak Bisa Scan Kode QR Profil Publik Karyawan", "url": "https://help.nusawork.com/tidak-bisa-scan-kode-qr-profil-publik-karyawan"},
         ),
     ]
-
-    vector_store.add_documents(docs)
-    print(f"Data seeded successfully! inserted={len(docs)}")
+    vector_store.add_documents(documents=docs)
+    print("Nusawork data seeded successfully.")
 
 if __name__ == "__main__":
     main()

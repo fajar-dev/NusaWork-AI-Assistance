@@ -1,4 +1,4 @@
-# NusaWork RAG System
+# NusaAI RAG System
 
 A Retrieval-Augmented Generation (RAG) system built with FastAPI, LangChain, Google Gemini, and PostgreSQL (pgvector).
 
@@ -92,7 +92,8 @@ python -m src.scripts.migrations
 Populate the vector store with example content:
 
 ```bash
-python -m src.scripts.seed
+python -m src.scripts.nusawork_seed
+python -m src.scripts.nusaid_seed
 ```
 
 ### 3. Run the Server
@@ -105,13 +106,13 @@ uvicorn main:app --reload
 
 The API will be available at `http://localhost:8000`.
 
-### 4. API Endpoint
+### 4. API Endpoints
 
-**POST** `/ask`
+**POST** `/ask-nusawork`
 
 ```json
 {
-  "question": "What allows employees to check in?"
+  "question": "Cara ekspor data tren kehadiran?"
 }
 ```
 
@@ -130,5 +131,13 @@ Response:
       "score": 0.4572025734098184
     }
   ]
+}
+```
+
+**POST** `/ask-nusaid`
+
+```json
+{
+  "question": "Apa itu NusaID?"
 }
 ```
